@@ -1,12 +1,11 @@
 #pragma once
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "types.h"
-
-int heap_init(void);
+int my_heap_init(size_t config_heap_size);
 
 void *my_malloc(size_t size);
 

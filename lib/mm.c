@@ -1,5 +1,6 @@
 #include "list.h"
 #include "mm.h"
+#include "types.h"
 
 #include <stdlib.h>
 
@@ -52,8 +53,10 @@ static int __heap_init(unsigned long start, unsigned long end)
     start = WORD_ALIGN_UP(start);
     end = WORD_ALIGN_DOWN(end);
 
-    if (start + MIN_HEAP_LEN >= end)
+    if (start + MIN_HEAP_LEN >= end) {
+        printf("?");
         return -1;
+    }
 
     first = (struct mem_region *)start;
     tail = (struct mem_region *)(end - DWORD_SIZE); // sizeof(*tail)
@@ -71,12 +74,13 @@ static int __heap_init(unsigned long start, unsigned long end)
 
 static char *heap;
 
-int heap_init(void)
+int my_heap_init(size_t config_heap_size)
 {
-    heap = (char *)malloc(CONFIG_HEAP_SIZE);
+    // heap = (char *)malloc(CONFIG_HEAP_SIZE);
+    heap = (char *)malloc(config_heap_size);
 
     unsigned long heap_start = (unsigned long)heap;
-    unsigned long heap_end = (unsigned long)heap + CONFIG_HEAP_SIZE;
+    unsigned long heap_end = (unsigned long)heap + config_heap_size;
 
     return __heap_init(heap_start, heap_end);
 }
